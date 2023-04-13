@@ -1,4 +1,3 @@
-node_modules
-/node_modules
-env
-/config/bot.js
+node_modules/
+.env
+json.sqlite
