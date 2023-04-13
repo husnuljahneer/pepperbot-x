@@ -12,6 +12,16 @@ module.exports = {
 
 client.on("messageCreate", async (message) => {
   if (message.channel.name === "pepper-bot" && !message.author.bot) {
+    if (
+      message.content.includes("creator") ||
+      message.content.includes("father") ||
+      message.content.includes("created")
+    ) {
+      message.reply(
+        `I think you want to know who my master is, it's WarM4chineRoxX#2013`
+      );
+    }
+
     API_URL = API_URL_HF;
 
     const payload = {
