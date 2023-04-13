@@ -4,7 +4,7 @@ const config = require("../../config/config.js");
 const { QuickDB } = require("quick.db");
 const db = new QuickDB();
 require("dotenv").config();
-const API_URL_HF = process.env.API_URL_HF;
+const API_URL_HF = process.env.API_URL_HF_MS;
 const TOKEN_HF = process.env.TOKEN;
 module.exports = {
   name: "messageCreate"
@@ -19,11 +19,14 @@ client.on("messageCreate", async (message) => {
         text: message.content
       }
     };
-
+    // form the request headers with Hugging Face API key
     const headers = {
-      Authorization: "Bearer " + TOKEN_HF
+      Authorization: "Bearer " + process.env.TOKEN_HF
     };
 
+    // set status to typing
+    message.channel.sendTyping();
+    // query the server
     const response = await fetch(API_URL, {
       method: "post",
       body: JSON.stringify(payload),
@@ -37,11 +40,8 @@ client.on("messageCreate", async (message) => {
       // error condition
       botResponse = data.error;
     }
-
-    // interaction.reply(botResponse);
-    message.reply({
-      embeds: [new EmbedBuilder().setDescription(botResponse).setColor("Green")]
-    });
+    // send message to channel as a reply
+    message.reply(botResponse);
   }
   if (message.channel.type !== 0) return;
   if (message.author.bot) return;
