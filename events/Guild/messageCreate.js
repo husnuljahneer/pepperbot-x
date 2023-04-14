@@ -15,11 +15,26 @@ client.on("messageCreate", async (message) => {
     if (
       message.content.includes("creator") ||
       message.content.includes("father") ||
-      message.content.includes("created")
+      message.content.includes("created") ||
+      message.content.includes("god") ||
+      message.content.includes("master") ||
+      message.content.includes("dad")
     ) {
       message.reply(
         `I think you want to know who my master is, it's WarM4chineRoxX#2013`
       );
+    }
+
+    if (message.content.match(/[0-9]+\s*[\+\-\*\/%]\s*[0-9]+/g)) {
+      // Extract the arithmetic expression from the message
+      const expression = message.content.match(
+        /[0-9]+\s*[\+\-\*\/%]\s*[0-9]+/g
+      )[0];
+      // Remove any spaces from the expression
+      const cleanedExpression = expression.replace(/\s/g, "");
+      // Evaluate the arithmetic expression and return the result
+      const result = eval(cleanedExpression);
+      return message.reply(`The result of ${expression} is ${result}`);
     }
 
     API_URL = API_URL_HF;
@@ -51,7 +66,7 @@ client.on("messageCreate", async (message) => {
       botResponse = data.error;
     }
     // send message to channel as a reply
-    message.reply(botResponse);
+    return message.reply(botResponse);
   }
   if (message.channel.type !== 0) return;
   if (message.author.bot) return;
